@@ -13,12 +13,17 @@ library(DT)
 # avoid scientific notation
 options(scipen=999)
 
+# read smart phone sales data
 data = read.csv('smartphone_sales.csv', header = TRUE, na.strings = c('-', 'N/A'), colClasses = c('character', rep('numeric', 10)))
 data[is.na(data)] <- 0
 
 shinyServer(function(input, output) {
-    # read smart phone sales data
     output$plot <- renderPlot({
+        # we're only taking the quarters specified. 
+        # since the data is already sorted, the quarter range matches the row range
+        # we only care about the first 9 columns
+        # however, to display it in the chart we'll have to transform it 
+        # from wide table to tall table
         plot.data <- data[input$quarters[1]:input$quarters[2],1:9] %>%
             melt(c('Quarter'))
         colnames(plot.data) <- c('Quarter', 'OS', 'Sales')
@@ -27,10 +32,14 @@ shinyServer(function(input, output) {
             theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
     })
     output$table <- renderDataTable(datatable({
+        # we're only taking the quarters specified. 
+        # since the data is already sorted, the quarter range matches the row range
         plot.data <- data[input$quarters[1]:input$quarters[2],]
+        # if we're not sorting by time, we're sorting by reverse time
         if(input$sort != 'Time') {
             plot.data <- arrange(plot.data, desc(Quarter))
         }
+        # formatting the numbers for display
         plot.data[,-1] <- sapply(plot.data[,-1], prettyNum, big.mark=',', digits=2, format='d')
         data <- plot.data
     }))
