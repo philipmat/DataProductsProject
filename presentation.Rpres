@@ -1,0 +1,107 @@
+A Look at Smartphone Sales World-Wide
+========================================================
+author: Philip Mateescu
+date: Sunday, March 6, 2016
+font-family: 'Helvetica'
+css: custom.css
+
+```{r echo=FALSE}
+options(scipen=999)
+data = read.csv('smartphone_sales.csv', header = TRUE, na.strings = c('-', 'N/A'), colClasses = c('character', rep('numeric', 10)))
+data[is.na(data)] <- 0
+
+p0 <- function (what) {
+    format(what, big.mark = ',', digits=0, nsmall=0)
+}
+p <- function (what) {
+    format(what, big.mark = ',', digits=2, nsmall=2)
+}
+```
+
+Head(data,n=1) vs Tail(data,n=1)
+========================================================
+
+Companies in the market in Q1 of 2007: Microsoft, RIM, Nokia, and other.
+
+In particular Nokia ownes with Symbian **`r p(data[1, 'Symbian'] * 100 / data[1, 'Total.Smartphones'])`%** of the smartphone market.
+Microsoft and RIM own **`r p(data[1, 'Windows.Mobile'] * 100 / data[1, 'Total.Smartphones'])`%** and respectively **`r p(data[1, 'RIM'] * 100 / data[1, 'Total.Smartphones'])`%**.
+
+Companies in the market in 2015: RIM, Apple, Microsoft, Android eco-system (Google, Samsung, HTC, etc), and others. 
+
+The only two original OS makers, Microsoft and RIM now own **`r p(data[36, 'Windows.Phone'] * 100 / data[36, 'Total.Smartphones'])`%** and respectively **`r p(data[36, 'RIM'] * 100 / data[36, 'Total.Smartphones'])`%** of the market.
+
+How did we get there.
+
+2007 - Enter iOS
+========================================================
+
+Steve Jobs describes a goal to sell 10 million phones, or 1% of the mobile phones sold at the time. 
+> There’s no chance that the iPhone is going to get any significant market share. No chance. -- Steve Balmer
+
+By the end of 2008, Apple had sold **`r p0(sum(data$iOS[1:8])*1000)`**, representing
+`r p(data$iOS[8] * 100/data$Total.Smartphones[8])`%** of the market.
+
+> It’s kind of one more entrant into an already very busy space with lots of choice for consumers. But in terms of a sort of a sea-change for BlackBerry, I would think that’s overstating it -- Jim Balsillie, RIM Co-CEO
+
+
+
+2008-2009 - The Rise of Smartphones
+========================================================
+Perhaps spurred by the iPhone innovation and broad appeal, 
+manufacturers across the board see an increase in sales. The market 
+grows **`r p(data$Total.Smartphones[12]/data$Total.Smartphones[1])` times 
+in number of units sold.
+
+Google introduces the Android operating system, which is offered for free
+to hardware makers.
+
+> You don't need to be a computer scientist to use a Windows Phone. I think you do to use an Android phone... It is hard for me to be excited about the Android phones. - Steve Balmer
+
+By the end of 2009 Android sells as well as Microsoft's Windows Mobile.
+
+
+2010-2011 - The Years of Obliteration
+=====================================
+
+2010 Q4 sees record sales for RIM and Nokia, the latter which ships twice as many devices
+as Apple and about the same as the number Android devices being sold.
+
+With these numbers, it's hard to see
+anything other than euphoria. Everybody is throwing crazy parties.
+  
+
+By the end of 2011 Nokia sees sales back to 2008 levels and now only represents **`r p(data[20, 'Symbian'] * 100 / data[20, 'Total.Smartphones'])`%** of the market. From **`r p(data[1, 'Symbian'] * 100 / data[1, 'Total.Smartphones'])`%** merely 4 years prior.
+
+Microsoft abandons Windows Mobile in 2011 in favor of it's new operating system, Windows Phone,
+which immediately sees double the sales, although insignificant by now.
+
+2012 Q4, RIM with **`r p(data[24, 'RIM'] * 100 / data[24, 'Total.Smartphones'])`%** of market joins their bleak future.
+
+Future Direction
+================
+<small>
+Obviously RIM is circling the drain, while
+iOS and Android continue to grow with the market.
+
+More interesting is what happens to Windows Phone. An overall trend
+shows Windows Phone growing (from 2011 inception):
+
+```{r}
+x = 1:nrow(data); t = 1:10
+trend.wp <- lm(data$Windows.Phone ~ x + 1)$coef[2]
+trend10.wp <- lm(data[27:36,]$Windows.Phone ~ t + 1)$coef[2]
+```
+```{r echo=FALSE}
+print(paste0('Windows Phone - last 20 quarters slope: ', trend.wp))
+```
+However, looking at the last 10 quarters? Not so rosy:
+```{r echo=FALSE}
+print(paste0('Windows Phone - last 10 quarters slope: ', trend10.wp))
+```
+I guess only time (and regression analysis) will tell.
+
+<small>
+Play with the data at https://philipmat.shinyapps.io/dataproducts-project/
+</small>
+
+</small>
