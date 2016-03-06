@@ -14,6 +14,7 @@ shinyUI(
                     min = 1,
                     max = 36,
                     value = c(20,36)),
+                p(strong(textOutput('total', inline=TRUE), style = "color: #428bca"), " smartphones sold in the selected period"),
                 selectInput('sort', 'Data Sort', c('Time', 'Reverse time')),
                 hr(),
                 p('See "How to use the application" below for assistance.')

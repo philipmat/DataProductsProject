@@ -44,4 +44,5 @@ shinyServer(function(input, output) {
         data <- plot.data
     }))
     output$range <- renderPrint({ input$quarters})
+    output$total <- renderText({ format(sum(data$Total.Smartphones[input$quarters[1]:input$quarters[2]] * 1000), big.mark = ',', nsmall=0) })
 })
