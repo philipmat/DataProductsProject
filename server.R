@@ -13,10 +13,11 @@ library(DT)
 # avoid scientific notation
 options(scipen=999)
 
+data = read.csv('smartphone_sales.csv', header = TRUE, na.strings = c('-', 'N/A'), colClasses = c('character', rep('numeric', 10)))
+data[is.na(data)] <- 0
+
 shinyServer(function(input, output) {
     # read smart phone sales data
-    data = read.csv('smartphone_sales.csv', header = TRUE, na.strings = c('-', 'N/A'), colClasses = c('character', rep('numeric', 10)))
-    data[is.na(data)] <- 0
     output$plot <- renderPlot({
         plot.data <- data[input$quarters[1]:input$quarters[2],1:9] %>%
             melt(c('Quarter'))
