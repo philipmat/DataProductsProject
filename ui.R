@@ -50,6 +50,16 @@ shinyUI(
                 p("If", em('Time'), "is chosen, the table will display the quarter in natural order of time. If", em('Reverse time'), "is chosen, the more recent entries will be shown first."),
                 p("You can also use the chevrons to the right of each column to sort that column, but be aware that the sorting of individual columns resets once new data is loaded throuh the quarters slider.")
             )
+        ),
+        # credits, etc
+        fluidRow(
+            column(12,
+                hr(),
+                h4("Miscellaneous"),
+                p("Data for this project comes from Wikipedia: https://en.wikipedia.org/wiki/Mobile_operating_system"),
+                p("The source code for this app is at: https://github.com/philipmat/DataProductsProject"),
+                p("The app is hosted ShinyApps.io: https://philipmat.shinyapps.io/dataproducts-project/")
+            )
         )
     )
 )
